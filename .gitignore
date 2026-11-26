@@ -1,0 +1,82 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+wheels/
+pip-wheel-metadata/
+*.manifest
+
+# ===== Virtual environments =====
+.venv/
+venv/
+env/
+ENV/
+
+# ===== PyInstaller =====
+*.spec.bak
+pyinstaller-build/
+
+# ===== Testing / coverage / type checking =====
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+.pyright/
+
+# ===== Qt =====
+*.qmlc
+*.jsc
+*.pro.user
+*.autosave
+
+# ===== MakeCode firmware (firmware/makecode) =====
+firmware/makecode/built/
+firmware/makecode/pxt_modules/
+firmware/makecode/node_modules/
+firmware/makecode/.pxt/
+firmware/makecode/*.hex
+firmware/makecode/_site/
+
+# ===== App runtime data =====
+logs/
+recordings/
+*.csv
+*.log
+# User layout profiles (remove this line to share profiles in the repo)
+profiles/*.mhub.json
+
+# ===== Secrets / local config =====
+.env
+.env.*
+*.token
+secrets.json
+config.local.json
+
+# ===== Reference material (third-party MakerLink copy) =====
+makerlink-src/
+
+# ===== IDE / editor =====
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*~
+
+# ===== OS =====
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
