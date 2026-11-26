@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 Scalar = int | str
 
 
-class CardType(str, Enum):
+class CardType(StrEnum):
     MOTOR = "MOTOR"
     SERVO = "SERVO"
     ANALOG_IN = "ANALOG_IN"

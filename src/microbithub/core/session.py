@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from enum import Enum
+from enum import StrEnum
 
 from ..transport.base import Transport
 from .events import Signal
@@ -41,7 +41,7 @@ from .protocol import (
 log = logging.getLogger(__name__)
 
 
-class SessionState(str, Enum):
+class SessionState(StrEnum):
     DISCONNECTED = "disconnected"
     CONNECTING = "connecting"
     HANDSHAKE = "handshake"
@@ -139,7 +139,7 @@ class DeviceSession:
             await self._send(Hello())
             try:
                 hello = await asyncio.wait_for(self._hello_fut, self.handshake_timeout)
-            except asyncio.TimeoutError as exc:
+            except TimeoutError as exc:
                 raise SessionError("no HELLO reply (is the MicrobitHub firmware running?)") from exc
             if hello.version != PROTOCOL_VERSION:
                 raise SessionError(
@@ -154,7 +154,7 @@ class DeviceSession:
             await self._send(Sync())
             try:
                 await asyncio.wait_for(self._synced_fut, self.sync_timeout)
-            except asyncio.TimeoutError as exc:
+            except TimeoutError as exc:
                 raise SessionError("card sync timed out") from exc
         except BaseException:
             await self._teardown()
@@ -207,7 +207,7 @@ class DeviceSession:
                 await self.transport.send_line(line)
                 try:
                     return await asyncio.wait_for(asyncio.shield(fut), self.ack_timeout)
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     if fut.done():
                         return fut.result()
             self.error.emit(f"No ACK for {card_id} after {1 + self.ack_retries} attempts")

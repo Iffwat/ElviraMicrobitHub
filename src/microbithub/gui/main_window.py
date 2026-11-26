@@ -44,6 +44,5 @@ class MainWindow(QMainWindow):
         QMessageBox.about(
             self,
             "About MicrobitHub",
-            f"<b>MicrobitHub</b> v{__version__}<br>"
-            "Dashboard for micro:bit + Motion:bit robots.",
+            f"<b>MicrobitHub</b> v{__version__}<br>Dashboard for micro:bit + Motion:bit robots.",
         )

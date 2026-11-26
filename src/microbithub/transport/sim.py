@@ -12,6 +12,7 @@ import math
 from ..core.model import Card, CardType
 from ..core.protocol import (
     PROTOCOL_VERSION,
+    Ack,
     CardDef,
     EStop,
     Event,
@@ -26,7 +27,6 @@ from ..core.protocol import (
     Sync,
     Synced,
     Value,
-    Ack,
     decode,
     encode,
 )
@@ -86,7 +86,9 @@ class SimTransport(Transport):
         firmware: str = "sim-0.1.0",
     ) -> None:
         super().__init__()
-        self.cards: dict[str, Card] = {c.id: c for c in (cards if cards is not None else demo_cards())}
+        self.cards: dict[str, Card] = {
+            c.id: c for c in (cards if cards is not None else demo_cards())
+        }
         self.latency = latency
         self.watchdog_timeout = watchdog_timeout
         self.stream_rate = stream_rate

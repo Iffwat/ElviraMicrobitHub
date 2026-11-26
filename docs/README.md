@@ -3,6 +3,7 @@
 | Document | Description |
 |----------|-------------|
 | [PLAN.md](PLAN.md) | Overall project plan: goals, architecture, protocol, GUI design, risks |
+| [devops.md](devops.md) | CI/CD with GitHub Actions: checks, builds, how to release |
 
 ## Phases
 

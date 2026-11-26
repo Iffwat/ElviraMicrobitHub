@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Union
 
 from .model import CardType, Scalar
 
@@ -182,9 +181,21 @@ class Event:
     name: str
 
 
-Message = Union[
-    Hello, Sync, Synced, Heartbeat, Set, EStop, Resume, CardDef, Value, Ack, Nak, Log, Event
-]
+Message = (
+    Hello
+    | Sync
+    | Synced
+    | Heartbeat
+    | Set
+    | EStop
+    | Resume
+    | CardDef
+    | Value
+    | Ack
+    | Nak
+    | Log
+    | Event
+)
 
 #: Messages that get a checksum by default when encoded.
 CHECKSUM_BY_DEFAULT = (Set, EStop, Resume)

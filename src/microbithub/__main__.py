@@ -1,7 +1,7 @@
 """Entry point.
 
-    python -m microbithub            open the GUI
-    python -m microbithub --demo     console demo against the simulator
+python -m microbithub            open the GUI
+python -m microbithub --demo     console demo against the simulator
 """
 
 from __future__ import annotations
@@ -41,7 +41,12 @@ async def run_demo(seconds: float) -> None:
     print(f"Connected to {info.name} (firmware {info.firmware}), {len(session.cards)} cards\n")
 
     print("> set M1 = 200:", await session.set_value("M1", 200))
-    print("> set S1 = 0 (limit is 20..160):", await session.set_value("S1", 0), "->", session.cards["S1"].value)
+    print(
+        "> set S1 = 0 (limit is 20..160):",
+        await session.set_value("S1", 0),
+        "->",
+        session.cards["S1"].value,
+    )
     print("> send text to T2:", await session.set_value("T2", "Hello micro:bit"))
     try:
         await session.set_value("A1", 5)

@@ -1,5 +1,7 @@
 # MicrobitHub
 
+[![CI](https://github.com/Iffwat/ElviraMicrobitHub/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Iffwat/ElviraMicrobitHub/actions/workflows/ci.yml)
+
 Python dashboard for controlling and monitoring a micro:bit + Cytron Motion:bit robot
 over Bluetooth or USB. Inspired by MakerLink.
 
@@ -19,4 +21,4 @@ pytest                         # run the test suite
 
 ## Documentation
 
-See [`docs/`](docs/README.md): the project plan and one page per phase.
+See [`docs/`](docs/README.md): the project plan, one page per phase, and [CI/CD](docs/devops.md).
