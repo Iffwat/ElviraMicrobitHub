@@ -256,6 +256,6 @@ much easier to debug. BLE is the hardest part on Windows.
 
 | Phase | Status | Page |
 |-------|--------|------|
-| 0. Setup | Partly done (skeleton and tests; GUI dependencies deferred to phase 2) | [phase-0-setup.md](phases/phase-0-setup.md) |
-| 1. Core + simulator | **Done** (67 tests passing) | [phase-1-core-simulator.md](phases/phase-1-core-simulator.md) |
+| 0. Setup | **Done** | [phase-0-setup.md](phases/phase-0-setup.md) |
+| 1. Core + simulator | **Done** | [phase-1-core-simulator.md](phases/phase-1-core-simulator.md) |
 | 2–8 | Coming soon | see [docs/README.md](README.md) |

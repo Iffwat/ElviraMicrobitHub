@@ -1,6 +1,7 @@
-"""Entry point: ``python -m microbithub``.
+"""Entry point.
 
-Phase 1 has no GUI yet, so this runs a console demo against the simulator.
+    python -m microbithub            open the GUI
+    python -m microbithub --demo     console demo against the simulator
 """
 
 from __future__ import annotations
@@ -62,18 +63,32 @@ async def run_demo(seconds: float) -> None:
     await session.disconnect()
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(prog="microbithub", description=__doc__)
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        prog="microbithub",
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--demo", action="store_true", help="run the console simulator demo")
     parser.add_argument("--seconds", type=float, default=6.0, help="demo length (default 6)")
+    parser.add_argument("--quit-after", type=float, metavar="S", help=argparse.SUPPRESS)
     args = parser.parse_args()
-    print("MicrobitHub - phase 1 (no GUI yet): running simulator demo\n")
-    try:
-        asyncio.run(run_demo(args.seconds))
-    except SessionError as exc:
-        print(f"Session error: {exc}")
-    except KeyboardInterrupt:
-        pass
+
+    if args.demo:
+        print("MicrobitHub - console demo with the simulated robot\n")
+        try:
+            asyncio.run(run_demo(args.seconds))
+        except SessionError as exc:
+            print(f"Session error: {exc}")
+            return 1
+        except KeyboardInterrupt:
+            pass
+        return 0
+
+    from .app import run_gui  # imported here so --demo works without Qt
+
+    return run_gui(quit_after=args.quit_after)
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

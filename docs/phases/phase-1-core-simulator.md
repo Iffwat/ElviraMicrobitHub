@@ -10,8 +10,8 @@ can be tested on its own. The GUI (phase 2) and the real transports (phases
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
-python -m microbithub              # console demo against the simulated robot
-python -m microbithub --seconds 10
+python -m microbithub --demo               # console demo against the simulated robot
+python -m microbithub --demo --seconds 10
 pytest                             # run the tests
 ```
 
@@ -25,7 +25,7 @@ pytest                             # run the tests
 | `core/session.py` | `DeviceSession`: handshake, sync, heartbeat, ACK + retry, E-stop, link monitoring |
 | `transport/base.py` | Abstract `Transport` and `LineBuffer` (joins chunks into lines, UTF-8 safe) |
 | `transport/sim.py` | `SimTransport`: a fake robot that behaves like the planned firmware |
-| `__main__.py` | Console demo |
+| `__main__.py` | Console demo (`--demo`) |
 
 ```
 DeviceSession ──send_line()──► Transport ──► (micro:bit / simulator)

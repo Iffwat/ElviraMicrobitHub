@@ -8,9 +8,13 @@ version = "0.1.0"
 description = "Python dashboard for controlling and monitoring a micro:bit + Motion:bit robot"
 readme = "README.md"
 requires-python = ">=3.12"
-# Phase 1 (core + simulator) uses only the standard library.
-# GUI / BLE / serial dependencies are added in their phases.
-dependencies = []
+# The core (protocol, session, simulator) uses only the standard library.
+# BLE / serial / profile dependencies are added in their phases.
+dependencies = [
+    "PySide6>=6.7",
+    "pyqtgraph>=0.13.7",
+    "qasync>=0.27",
+]
 
 [project.optional-dependencies]
 dev = [
