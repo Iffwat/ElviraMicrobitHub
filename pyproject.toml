@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "microbithub"
+version = "0.1.0"
+description = "Python dashboard for controlling and monitoring a micro:bit + Motion:bit robot"
+readme = "README.md"
+requires-python = ">=3.12"
+# Phase 1 (core + simulator) uses only the standard library.
+# GUI / BLE / serial dependencies are added in their phases.
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+]
+
+[project.scripts]
+microbithub = "microbithub.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

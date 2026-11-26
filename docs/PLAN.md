@@ -107,6 +107,9 @@ Kept human-readable, like MakerLink, so it is easy to debug in a serial monitor.
 ```
 - `checksum` = XOR of all bytes before `*`, written as 2 hex digits. It is optional,
   but always sent by the PC for actuator commands.
+- Free-text fields are escaped (`%`→`%25`, `*`→`%2A`, `,`→`%2C`, newline→`%0A`) so
+  text can never be confused with a checksum or a field separator (*added in phase 1*).
+  Full details: [phase-1-core-simulator.md](phases/phase-1-core-simulator.md).
 
 ### PC → micro:bit
 | Message | Meaning |
@@ -123,6 +126,7 @@ Kept human-readable, like MakerLink, so it is easy to debug in a serial monitor.
 |---------|---------|
 | `HELLO:2,MicrobitHub,<fw version>` | Reply to the handshake |
 | `CARD:M1,MOTOR,0,-255,255,"Left wheel"` | Card definition (ID, type, start, min, max, label) |
+| `SYNCED:<count>` | All cards sent (*added in phase 1*, so the PC knows when sync is complete) |
 | `VAL:A1:512` | Value update |
 | `ACK:<id>` / `NAK:<id>,<reason>` | Confirms or rejects a `SET` |
 | `HB:<n>` | Heartbeat echo, used to measure latency |
@@ -174,7 +178,10 @@ Kept human-readable, like MakerLink, so it is easy to debug in a serial monitor.
 ```
 Microbithub/
 ├─ .venv/                      # already created (Python 3.12)
-├─ PLAN.md
+├─ docs/
+│  ├─ README.md                # documentation index
+│  ├─ PLAN.md                  # this file
+│  └─ phases/                  # one page per phase
 ├─ pyproject.toml
 ├─ README.md
 ├─ src/microbithub/
@@ -185,7 +192,7 @@ Microbithub/
 │  │  ├─ session.py            # DeviceSession: handshake, sync, heartbeat, acks
 │  │  ├─ model.py              # Card / CardType / state (pydantic)
 │  │  ├─ logger.py             # CSV logging, record/replay
-│  │  └─ events.py             # Qt signal bridge
+│  │  └─ events.py             # pure-Python Signal (Qt bridge added in phase 2)
 │  ├─ transport/
 │  │  ├─ base.py               # abstract Transport (connect/send/receive)
 │  │  ├─ ble.py                # bleak + Nordic UART
@@ -245,9 +252,10 @@ much easier to debug. BLE is the hardest part on Windows.
 
 ---
 
-## 11. Immediate next steps
+## 11. Progress
 
-1. Install the base dependencies into `.venv`:
-   `pip install PySide6 pyqtgraph qasync bleak pyserial pyserial-asyncio pydantic pytest pytest-asyncio`
-2. Create the skeleton (phase 0).
-3. Write `protocol.py` and its tests first. Everything else depends on it.
+| Phase | Status | Page |
+|-------|--------|------|
+| 0. Setup | Partly done (skeleton and tests; GUI dependencies deferred to phase 2) | [phase-0-setup.md](phases/phase-0-setup.md) |
+| 1. Core + simulator | **Done** (67 tests passing) | [phase-1-core-simulator.md](phases/phase-1-core-simulator.md) |
+| 2–8 | Coming soon | see [docs/README.md](README.md) |
