@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "microbithub"
+dynamic = ["version"]  # single source: src/microbithub/__init__.py
+description = "Python dashboard for controlling and monitoring a micro:bit + Motion:bit robot"
+readme = "README.md"
+requires-python = ">=3.12"
+# The core (protocol, session, simulator) uses only the standard library.
+# BLE / serial / profile dependencies are added in their phases.
+dependencies = [
+    "PySide6>=6.7",
+    "pyqtgraph>=0.13.7",
+    "qasync>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=5",
+    "ruff==0.17.6",  # pinned so CI lint results don't change on their own (Dependabot bumps it)
+]
+build = [
+    "pyinstaller>=6.10",
+]
+
+[project.scripts]
+microbithub = "microbithub.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "microbithub.__version__" }
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.coverage.run]
+source = ["microbithub"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
