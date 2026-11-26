@@ -3,7 +3,9 @@
 | Document | Description |
 |----------|-------------|
 | [PLAN.md](PLAN.md) | Overall project plan: goals, architecture, protocol, GUI design, risks |
-| [devops.md](devops.md) | CI/CD with GitHub Actions: checks, builds, how to release |
+| [devops.md](devops.md) | CI/CD overview: pipeline, files, cheat sheet |
+| [ci.md](ci.md) | Continuous Integration: lint, tests, dev builds, troubleshooting |
+| [cd.md](cd.md) | Continuous Delivery: versioning, releases, rollback, Dependabot |
 
 ## Phases
 
