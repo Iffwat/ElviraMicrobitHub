@@ -1,5 +1,7 @@
 # MicrobitHub (MakeCode extension)
 
+Needs a **micro:bit V2**: with Bluetooth, the program does not fit in a V1's flash.
+
 Connects a micro:bit + Cytron **Motion:bit** robot to the MicrobitHub desktop
 dashboard over **USB serial** or **Bluetooth UART**.
 

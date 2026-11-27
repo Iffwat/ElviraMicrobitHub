@@ -1,6 +1,9 @@
 # Phase 3 — Firmware v2 (MakeCode extension)
 
-**Status:** 🟡 Code complete. Not yet compiled with MakeCode or flashed to a micro:bit.
+**Status:** 🟡 Compiles with MakeCode (CI) and passes all conformance scenarios. Not yet flashed to a micro:bit.
+
+**micro:bit V2 only.** With Bluetooth, the V1 build was 15 KB too big for flash, so
+`pxt.json` sets `"disablesVariants": ["mbdal"]`.
 
 The micro:bit side is a MakeCode extension in `firmware/makecode/`. It speaks
 protocol v2 exactly like `SimTransport`. This is checked by a shared set of
@@ -22,7 +25,7 @@ conformance scenarios that both the simulator and the firmware logic must pass.
 
 ```
 scenarios.txt ──► tests/test_firmware_conformance.py ──► SimTransport (Python)   ✔ 13/13
-             └──► firmware/host (Node)                ──► hub.ts + protocol.ts    CI job
+             └──► firmware/host (Node)                ──► hub.ts + protocol.ts    ✔ 13/13 (CI)
 ```
 
 Keeping `hub.ts` free of hardware calls is what makes it testable on a PC.
@@ -77,12 +80,10 @@ npm test                                      # PASS/FAIL per scenario
 CI runs both, plus a real MakeCode compile (`firmware-makecode` job:
 `pxt target microbit`, `pxt install`, `pxt build`).
 
-## Still to do (needs Node and hardware)
+## Still to do (needs hardware)
 
-1. **Compile with MakeCode:** push the branch so the `firmware-logic` and
-   `firmware-makecode` CI jobs run, or install Node and run them locally. The
-   code uses only the TypeScript subset MakeCode supports (no regular
-   expressions, Map or exceptions), but it has not been compiled by `pxt` yet.
+1. ~~Compile with MakeCode~~: done. The `firmware-logic` and `firmware-makecode`
+   CI jobs pass.
 2. **Flash and test** in a serial monitor (115200 baud): the replies should
    match `scenarios.txt`. Then check that unplugging the dashboard stops the
    motors within about 1 second.

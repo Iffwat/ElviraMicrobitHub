@@ -14,7 +14,7 @@
 | 0 | [Setup](phases/phase-0-setup.md) | ✅ Done |
 | 1 | [Core + simulator](phases/phase-1-core-simulator.md) | ✅ Done |
 | 2 | [Basic GUI](phases/phase-2-basic-gui.md) | ✅ Done |
-| 3 | [Firmware v2 (MakeCode)](phases/phase-3-firmware.md) | 🟡 Code complete, hardware test pending |
+| 3 | [Firmware v2 (MakeCode)](phases/phase-3-firmware.md) | 🟡 Compiles and passes conformance, hardware test pending |
 | 4 | [USB serial transport](phases/phase-4-usb-serial.md) | ⏳ Coming soon |
 | 5 | [Bluetooth transport](phases/phase-5-bluetooth.md) | ⏳ Coming soon |
 | 6 | [Polish](phases/phase-6-polish.md) | ⏳ Coming soon |

@@ -261,5 +261,5 @@ much easier to debug. BLE is the hardest part on Windows.
 | 0. Setup | **Done** | [phase-0-setup.md](phases/phase-0-setup.md) |
 | 1. Core + simulator | **Done** | [phase-1-core-simulator.md](phases/phase-1-core-simulator.md) |
 | 2. Basic GUI | **Done** | [phase-2-basic-gui.md](phases/phase-2-basic-gui.md) |
-| 3. Firmware v2 | **Code complete**, not yet flashed | [phase-3-firmware.md](phases/phase-3-firmware.md) |
+| 3. Firmware v2 | **Compiles, conformance passes** (V2 only), not yet flashed | [phase-3-firmware.md](phases/phase-3-firmware.md) |
 | 4–8 | Coming soon | see [docs/README.md](README.md) |
