@@ -104,7 +104,13 @@ jobs:
       - run: npm install -g pxt
       - run: pxt target microbit
       - run: pxt install
-      - run: pxt build
+      - name: pxt build
+        run: |
+          set -o pipefail
+          pxt build 2>&1 | tee pxt-output.txt
+      - name: Show build errors as annotations
+        if: failure()
+        run: python3 ../../.github/scripts/annotate_failures.py pxt-output.txt none
 
   build:
     # Continuous delivery of development builds: every PR and every push to main

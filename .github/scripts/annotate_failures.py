@@ -55,7 +55,7 @@ def main(output_file: str, junit_file: str) -> int:
     if output.is_file():
         lines = output.read_text(encoding="utf-8", errors="replace").splitlines()
         # The end of the output holds the short summary, or the traceback of a crash.
-        annotate("pytest output (last lines)", "\n".join(lines[-TAIL_LINES:]))
+        annotate("Output (last lines)", "\n".join(lines[-TAIL_LINES:]))
     return 0
 
 

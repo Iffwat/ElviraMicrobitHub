@@ -285,3 +285,27 @@ def test_bridge_forwards_and_detaches():
     bridge.detach()
     session.log_received.emit("ignored")
     assert logs == ["hello"] and len(session.log_received) == 0
+
+
+def test_dropped_cards_do_not_crash_on_exit():
+    # Qt connections to lambdas that capture ``self`` keep a card alive until
+    # interpreter shutdown, where Qt then aborts (seen in CI as exit 127/139).
+    import subprocess
+    import sys
+
+    code = (
+        "from PySide6.QtWidgets import QApplication\n"
+        "from microbithub.core.model import Card, CardType\n"
+        "from microbithub.gui.cards import create_card_widget\n"
+        "app = QApplication([])\n"
+        "for _ in range(3):\n"
+        "    for t in CardType:\n"
+        "        w = create_card_widget(Card('X1', t))\n"
+        "        w.set_live(True)\n"
+        "        w.set_live(False)\n"
+    )
+    for _ in range(3):  # the crash was intermittent
+        result = subprocess.run(
+            [sys.executable, "-c", code], capture_output=True, text=True, timeout=60
+        )
+        assert result.returncode == 0, result.stderr[-2000:]

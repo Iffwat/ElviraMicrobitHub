@@ -39,6 +39,7 @@ class SliderCard(CardWidget):
         self.range_label.setStyleSheet("color: palette(mid); font-size: 11px;")
 
         self.buttons = QHBoxLayout()
+        self._presets: dict[QPushButton, int] = {}
         layout = QVBoxLayout(self)
         layout.addWidget(self.value_label)
         layout.addWidget(self.slider)
@@ -52,10 +53,19 @@ class SliderCard(CardWidget):
         button = QPushButton(text)
         button.setToolTip(tooltip)
         button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        button.clicked.connect(lambda: self.set_from_user(value))
+        # A bound method, not a lambda capturing self: PySide holds bound
+        # methods weakly, so the card can be freed (a lambda keeps it alive
+        # until interpreter exit, where Qt then crashes).
+        self._presets[button] = value
+        button.clicked.connect(self._on_preset)
         self.buttons.addWidget(button)
         self.inputs.append(button)
         return button
+
+    def _on_preset(self) -> None:
+        value = self._presets.get(self.sender())
+        if value is not None:
+            self.set_from_user(value)
 
     def set_from_user(self, value: int) -> None:
         """Move the slider as if the user did it, and send the value with ACK."""

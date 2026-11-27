@@ -62,7 +62,7 @@ class SoundCard(CardWidget):
         self.status_label.setStyleSheet("font-size: 18px; font-weight: 600;")
         self.mute = QCheckBox("Mute")
         self.mute.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.mute.toggled.connect(lambda on: on and self.stop())
+        self.mute.toggled.connect(self._on_mute)  # bound method: see SliderCard.add_button
         self.stop_button = QPushButton("Stop sound")
         self.stop_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.stop_button.clicked.connect(self.stop)
@@ -107,6 +107,10 @@ class SoundCard(CardWidget):
         else:
             self.playing = None
             self.status_label.setText(f"♪ {cmd.name} (once)")
+
+    def _on_mute(self, muted: bool) -> None:
+        if muted:
+            self.stop()
 
     def stop(self) -> None:
         self._loop_timer.stop()
