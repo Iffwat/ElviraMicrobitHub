@@ -1,0 +1,171 @@
+# MicrobitHub protocol v2 conformance scenarios.
+#
+# Checked against BOTH:
+#   - the Python simulator  (tests/test_firmware_conformance.py)
+#   - the firmware logic    (firmware/host, run with Node: hub.ts + protocol.ts)
+# so the micro:bit firmware answers exactly like SimTransport.
+#
+# Every scenario starts with a fresh device declaring the simulator's demo
+# cards (M1 M2 S1 A1 D1 D2 T1 T2 B1). Lines:
+#   === name      start a scenario
+#   > LINE        PC sends LINE
+#   >> LINE       PC sends LINE with its checksum appended (*XX)
+#   ! ID VALUE    the robot program changes a card (sensor reading, text ...)
+#   ~ MS          time passes (sensor streaming and the watchdog run)
+#   < LINE        expected reply. After each action, the replies must match the
+#                 '<' lines that follow it exactly, in order. {any} matches anything.
+
+=== handshake and card sync
+> HELLO:2
+< HELLO:2,{any}
+> SYNC
+< CARD:M1,MOTOR,0,-255,255,Left wheel
+< CARD:M2,MOTOR,0,-255,255,Right wheel
+< CARD:S1,SERVO,90,20,160,Gripper
+< CARD:A1,ANALOG_IN,0,0,1023,Light sensor
+< CARD:D1,DIGITAL_IN,0,0,1,Bumper
+< CARD:D2,DIGITAL_OUT,0,0,1,Headlight
+< CARD:T1,TEXT_IN,,,,Status
+< CARD:T2,TEXT_OUT,,,,Message
+< CARD:B1,SOUND,,,,Alarm
+< SYNCED:9
+
+=== heartbeat echo, lower-case tag accepted
+> HB:17
+< HB:17
+> hb:5
+< HB:5
+
+=== set values with and without checksum
+>> SET:M1:200
+< ACK:M1
+> SET:M2:-50
+< ACK:M2
+>> SET:D2:1
+< ACK:D2
+> SET:M1:12.6
+< ACK:M1
+
+=== limits are enforced on the device
+>> SET:S1:0
+< ACK:S1
+< VAL:S1:20
+>> SET:S1:170
+< ACK:S1
+< VAL:S1:160
+>> SET:M1:999
+< ACK:M1
+< VAL:M1:255
+>> SET:D2:5
+< ACK:D2
+< VAL:D2:1
+
+=== refused values
+>> SET:X9:1
+< NAK:X9,UNKNOWN
+>> SET:A1:5
+< NAK:A1,READ_ONLY
+>> SET:M1:abc
+< NAK:M1,BAD_VALUE
+> SET:M1:
+< NAK:M1,BAD_VALUE
+
+=== text to the micro:bit (escaped)
+>> SET:T2:Hi%2C bot%2A
+< ACK:T2
+< LOG:T2 received text: Hi%2C bot%2A
+>> SET:T2:+5
+< ACK:T2
+< LOG:T2 received text: 5
+
+=== bad lines are rejected
+> SET:M1:5*00
+< LOG:Rejected line: {any}
+> FOO:1
+< LOG:Rejected line: {any}
+> SET:1X:5
+< LOG:Rejected line: {any}
+> SET:M1
+< LOG:Rejected line: {any}
+> HB:x
+< LOG:Rejected line: {any}
+> HELLO:two
+< LOG:Rejected line: {any}
+
+=== device-to-PC messages sent to the device are ignored
+> VAL:A1:5
+< LOG:Ignored {any}
+> LOG:hello
+< LOG:Ignored {any}
+
+=== emergency stop
+>> SET:M1:200
+< ACK:M1
+>> SET:M2:-100
+< ACK:M2
+>> ESTOP
+< VAL:M1:0
+< VAL:M2:0
+< EVT:ESTOP
+>> SET:M1:100
+< NAK:M1,ESTOP
+< VAL:M1:0
+>> SET:S1:100
+< ACK:S1
+>> RESUME
+< EVT:RESUME
+>> SET:M1:100
+< ACK:M1
+
+=== estop with motors already stopped
+> ESTOP
+< EVT:ESTOP
+> RESUME
+< EVT:RESUME
+
+=== watchdog stops the motors after 1 s without heartbeat
+>> SET:M1:150
+< ACK:M1
+~ 1200
+> HB:1
+< HB:1
+>> SET:M1:150
+< ACK:M1
+~ 1200
+< VAL:M1:0
+< EVT:WATCHDOG
+~ 300
+> HB:2
+< HB:2
+
+=== sensors stream only after sync, with a deadband
+! A1 500
+~ 150
+> SYNC
+< {any}
+< {any}
+< {any}
+< CARD:A1,ANALOG_IN,500,0,1023,Light sensor
+< {any}
+< {any}
+< {any}
+< {any}
+< {any}
+< SYNCED:9
+! A1 700
+~ 150
+< VAL:A1:700
+! A1 703
+~ 150
+! A1 710
+~ 150
+< VAL:A1:710
+! A1 2000
+~ 150
+< VAL:A1:1023
+! D1 1
+~ 150
+< VAL:D1:1
+! T1 all good, 100%
+~ 150
+< VAL:T1:all good%2C 100%25

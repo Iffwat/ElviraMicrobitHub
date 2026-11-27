@@ -1,0 +1,18 @@
+{
+    // Compiles the firmware logic (no hardware calls) for Node.
+    // main.ts is left out: it needs the MakeCode runtime (serial, bluetooth, motionbit).
+    "compilerOptions": {
+        "target": "ES2017",
+        "module": "none",
+        "outFile": "built/harness.js",
+        "lib": ["ES2017"],
+        "strict": false,
+        "noImplicitAny": true,
+        "noUnusedLocals": true
+    },
+    "files": [
+        "../makecode/protocol.ts",
+        "../makecode/hub.ts",
+        "harness.ts"
+    ]
+}

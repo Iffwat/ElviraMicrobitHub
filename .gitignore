@@ -47,6 +47,9 @@ firmware/makecode/node_modules/
 firmware/makecode/.pxt/
 firmware/makecode/*.hex
 firmware/makecode/_site/
+firmware/host/node_modules/
+firmware/host/built/
+firmware/host/package-lock.json
 
 # ===== App runtime data =====
 logs/

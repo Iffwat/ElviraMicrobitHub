@@ -36,9 +36,14 @@ push/PR ─►│  lint    │──┐
           ┌──────────┐  ├──► ┌──────────────┐
           │ test ×4  │──┘    │ build (exe)  │
           └──────────┘       └──────────────┘
+          ┌──────────────────┐
+          │ firmware-logic   │   (independent; the exe build doesn't wait for them)
+          │ firmware-makecode│
+          └──────────────────┘
 ```
 
 `lint` and `test` run in parallel. `build` starts only if both succeed.
+The two firmware jobs run alongside them (see 2.3).
 
 ### 2.1 `lint` — Lint (ruff)
 | Step | Command | Fails when |
@@ -79,7 +84,18 @@ That lets `tests/test_gui_smoke.py` create the window and start the full app on 
 **Coverage** appears in the log of the *Run tests* step (`TOTAL … %`). Measured on Windows,
 it was 82% when CI was set up.
 
-### 2.3 `build` — Build Windows exe
+### 2.3 `firmware-logic` and `firmware-makecode` (phase 3)
+
+| Job | Steps | Fails when |
+|-----|-------|-----------|
+| `firmware-logic` — Firmware logic (Node) | Node 22, `npm install` + `npm test` in `firmware/host` | the firmware's `hub.ts` / `protocol.ts` give a different reply than `firmware/conformance/scenarios.txt` (the simulator passes the same file in pytest) |
+| `firmware-makecode` — Firmware build (MakeCode) | `npm install -g pxt`, `pxt target microbit`, `pxt install`, `pxt build` in `firmware/makecode` | the extension does not compile for the micro:bit (blocks, Static TypeScript subset, Motion:bit / Bluetooth APIs) |
+
+`firmware-makecode` downloads the MakeCode target and may use the MakeCode
+compile service, so a network problem can fail it; re-run the job before
+looking at the code.
+
+### 2.4 `build` — Build Windows exe
 Runs only for **pull requests** and pushes to **`main`**, not on every feature-branch push, to save time.
 
 | Step | Details |
@@ -117,6 +133,7 @@ ruff check .            # same as the lint job   (ruff check --fix .  auto-fixes
 ruff format .           # fixes formatting       (CI runs it with --check)
 pytest --cov            # same as the test job
 .\packaging\build.ps1   # same as the build job (about 1-2 min)
+cd firmware\host; npm install; npm test   # same as firmware-logic (needs Node 18+)
 ```
 
 If all four pass locally, CI will almost always pass. The exception is Linux-specific problems.

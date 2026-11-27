@@ -1,0 +1,12 @@
+{
+    "name": "microbithub-firmware-host",
+    "private": true,
+    "description": "Runs the MicrobitHub firmware logic on a PC against the conformance scenarios.",
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "test": "tsc -p tsconfig.json && node built/harness.js ../conformance/scenarios.txt"
+    },
+    "devDependencies": {
+        "typescript": "5.6.3"
+    }
+}

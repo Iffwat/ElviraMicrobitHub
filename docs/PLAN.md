@@ -206,7 +206,9 @@ Microbithub/
 │  │  └─ cards/                # motor.py, servo.py, analog.py, digital.py, …
 │  ├─ input/gamepad.py
 │  └─ assets/                  # icons, sounds (siren/chime/beep .wav)
-├─ firmware/makecode/          # MakeCode extension (main.ts, pxt.json)
+├─ firmware/makecode/          # MakeCode extension (protocol.ts, hub.ts, main.ts, pxt.json)
+├─ firmware/conformance/       # scenarios both the simulator and the firmware must pass
+├─ firmware/host/              # runs the firmware logic on a PC with Node
 └─ tests/                      # test_protocol.py, test_session.py
 ```
 
@@ -259,4 +261,5 @@ much easier to debug. BLE is the hardest part on Windows.
 | 0. Setup | **Done** | [phase-0-setup.md](phases/phase-0-setup.md) |
 | 1. Core + simulator | **Done** | [phase-1-core-simulator.md](phases/phase-1-core-simulator.md) |
 | 2. Basic GUI | **Done** | [phase-2-basic-gui.md](phases/phase-2-basic-gui.md) |
-| 3–8 | Coming soon | see [docs/README.md](README.md) |
+| 3. Firmware v2 | **Code complete**, not yet flashed | [phase-3-firmware.md](phases/phase-3-firmware.md) |
+| 4–8 | Coming soon | see [docs/README.md](README.md) |

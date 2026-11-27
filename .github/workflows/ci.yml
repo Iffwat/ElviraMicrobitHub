@@ -65,6 +65,40 @@ jobs:
             coverage.xml
           retention-days: 14
 
+  firmware-logic:
+    # The firmware's protocol + safety logic (hub.ts, protocol.ts) run with Node
+    # against the same scenarios the simulator passes in tests/test_firmware_conformance.py.
+    name: Firmware logic (Node)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: firmware/host
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+
+  firmware-makecode:
+    # Compiles the extension (blocks, Motion:bit and Bluetooth bindings) with the
+    # real MakeCode toolchain. Needs network access to the MakeCode compile service.
+    name: Firmware build (MakeCode)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: firmware/makecode
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install -g pxt
+      - run: pxt target microbit
+      - run: pxt install
+      - run: pxt build
+
   build:
     # Continuous delivery of development builds: every PR and every push to main
     # produces a downloadable .exe (Actions run page -> Artifacts).
