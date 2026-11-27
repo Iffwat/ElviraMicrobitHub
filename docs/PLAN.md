@@ -192,7 +192,7 @@ Microbithub/
 │  │  ├─ session.py            # DeviceSession: handshake, sync, heartbeat, acks
 │  │  ├─ model.py              # Card / CardType / state (pydantic)
 │  │  ├─ logger.py             # CSV logging, record/replay
-│  │  └─ events.py             # pure-Python Signal (Qt bridge added in phase 2)
+│  │  └─ events.py             # pure-Python Signal (Qt bridge: gui/bridge.py)
 │  ├─ transport/
 │  │  ├─ base.py               # abstract Transport (connect/send/receive)
 │  │  ├─ ble.py                # bleak + Nordic UART
@@ -258,4 +258,5 @@ much easier to debug. BLE is the hardest part on Windows.
 |-------|--------|------|
 | 0. Setup | **Done** | [phase-0-setup.md](phases/phase-0-setup.md) |
 | 1. Core + simulator | **Done** | [phase-1-core-simulator.md](phases/phase-1-core-simulator.md) |
-| 2–8 | Coming soon | see [docs/README.md](README.md) |
+| 2. Basic GUI | **Done** | [phase-2-basic-gui.md](phases/phase-2-basic-gui.md) |
+| 3–8 | Coming soon | see [docs/README.md](README.md) |
