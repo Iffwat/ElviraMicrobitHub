@@ -20,6 +20,9 @@
     "supportedTargets": [
         "microbit"
     ],
+    "disablesVariants": [
+        "mbdal"
+    ],
     "preferredEditor": "blocksprj",
     "public": true,
     "yotta": {
